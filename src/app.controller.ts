@@ -1,14 +1,7 @@
 import { Body, Controller, Get, Query, Post, UploadedFiles, UseInterceptors, HttpCode } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore"; 
 import admin  from "firebase-admin";
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-
-import { Express } from 'express'
 import { writeFileSync } from 'fs';
 // import * as serviceAccount from "C:Users//habac//Downloads//db-db-9bbfe-firebase-adminsdk-7o1mp-8c8ae93086.json";
 
@@ -37,38 +30,32 @@ export class AppController {
         arLocationImg.push(`${id}${index}`);
         writeFileSync(`./uploads/${id}${index}.jpg`, file.buffer);
       })
-
-
       await db.collection('data_store').add({
         title, description, link, data: arLocationImg
       });
-
       return {type: true}
     }catch(err){
       return {type: false, err}
     }
-    
+  }
+
+
+  @Get('get_data')
+  async get_data(@Query() query){
+
+    try{
+      const snapshot = await db.collection('data_store').get();
+      let arWithData = [];
+      snapshot.forEach((doc) => {
+        arWithData.push({id: doc.id, data: doc.data()})
+      });
+      return {type: true, data: arWithData};
+    }catch(err){
+      return {type: false, err};
+    }
   }
 
   
-  //////////////////////////////////
-
-
-
-  @Post('api')
-  ok(@Body() body: any){
-
-    console.log('a ajuns aici ---', body);
-    return 'AAAAAAAAAAAAA';
-  }
-
-
-  @Get('api_get')
-  ok2(@Query() query: any){
-
-    console.log('a ajuns aici ---', query);
-    return 'BBBBBBBBBBBBB';
-  }
 
 }
 
@@ -106,11 +93,6 @@ export class AppController {
 
 
 /////////////////////////////////////////////////////////////////
-  // const snapshot = await db.collection('users').get();
-  // console.log(typeof(snapshot));
-  // snapshot.forEach((doc) => {
-  //   console.log(doc.id, '=>', doc.data());
-  // });
   
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
