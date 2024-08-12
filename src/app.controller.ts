@@ -55,28 +55,25 @@ export class AppController {
     }
   }
 
+  @Post('deleteProduct')
+  async deleteProduct(@Body() body){
+
+    const {id} = body;
+    try{
+      await db.collection('data_store').doc(id).delete();
+      return {type: true};
+    }catch(err){
+      return {type: false, err}
+    }
+  }
+
   
 
 }
 
 
-/////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////
-  // const docRef = db.collection('users').doc('1');
-  // await docRef.set({
-  //   first: 'Adokoka',
-  //   last: 'Lovelokokace',
-  //   born: 1815, 
-  //   sex: 'M'
-  // });
-  // console.log(docRef);
-/////////////////////////////////////////////////////////////////
-  // const res = await db.collection('data_store').add(
-  //   {
-  //     name: 'Tokyo',
-  //     country: 'Japan'
-  //   }
-  // );
+
+
 
 /////////////////////////////////////////////////////////////////
 
@@ -85,14 +82,3 @@ export class AppController {
 
 ////////////////////////////////////////////////////////////////
 
-// const res = await db.collection('data_store').doc('twTV95L4fJnGTiexHP60').delete();
-
-
-/////////////////////////////////////////////////////////////////
-
-
-
-/////////////////////////////////////////////////////////////////
-  
-///////////////////////////////////////////////
-///////////////////////////////////////////////
