@@ -14,7 +14,8 @@ You can easily get the project up and running by following these steps:
     npm install
 
 3. Start the development server:
-    npm start
+
+   npm start
 
 
 Happy coding!
