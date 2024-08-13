@@ -57,10 +57,22 @@ export class AppController {
 
   @Post('deleteProduct')
   async deleteProduct(@Body() body){
-
     const {id} = body;
     try{
       await db.collection('data_store').doc(id).delete();
+      return {type: true};
+    }catch(err){
+      return {type: false, err}
+    }
+  }
+
+  @Post('changeProduct')
+  async changeProduct(@Body() body){
+    const {title, link, description, id} = body;
+
+    try{
+      const col = db.collection('data_store').doc(id);
+      await col.update({title, link, description});
       return {type: true};
     }catch(err){
       return {type: false, err}
@@ -74,11 +86,4 @@ export class AppController {
 
 
 
-
-/////////////////////////////////////////////////////////////////
-
-// const col = db.collection('data_store').doc('pGwLPn74ci4fG8A9sKWM');
-// const res = await col.update({ok: 'nu', name: 'plok'});
-
-////////////////////////////////////////////////////////////////
 
