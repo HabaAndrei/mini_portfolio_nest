@@ -26,7 +26,7 @@ export class AppController {
   async store_data(@UploadedFiles() files: Express.Multer.File[], @Query() query: any){
     try{
       const {id, title, description, link} = query;
-      let arLocationImg = [];
+      const arLocationImg: string[] = [];
       files.forEach((file, index)=>{
         arLocationImg.push(`${id}${index}`);
         writeFileSync(`./uploads/${id}${index}.jpg`, file.buffer);
@@ -42,7 +42,7 @@ export class AppController {
 
 
   @Get('get_data')
-  async get_data(@Query() query){
+  async get_data(@Query() query: any){
 
     try{
       const snapshot = await db.collection('data_store').get();
@@ -57,7 +57,7 @@ export class AppController {
   }
 
   @Post('deleteProduct')
-  async deleteProduct(@Body() body){
+  async deleteProduct(@Body() body: any){
     const {id, arImages} = body;
 
     try{
@@ -73,7 +73,7 @@ export class AppController {
   }
 
   @Post('changeProduct')
-  async changeProduct(@Body() body){
+  async changeProduct(@Body() body: any){
     const {title, link, description, id} = body;
 
     try{
