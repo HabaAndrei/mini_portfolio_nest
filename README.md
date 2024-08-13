@@ -5,6 +5,7 @@ This project is built entirely in TypeScript using NestJS. It supports the proje
 You can easily get the project up and running by following these steps:
 
 1. Clone the repository:
+   
     git clone <repository-url>
 
     Add a `configFirebase.json` file. Please contact me to obtain the necessary details for this file.
