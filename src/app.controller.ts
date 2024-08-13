@@ -2,10 +2,11 @@ import { Body, Controller, Get, Query, Post, UploadedFiles, UseInterceptors, Htt
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import admin  from "firebase-admin";
-import { writeFileSync } from 'fs';
-// import * as serviceAccount from "C:Users//habac//Downloads//db-db-9bbfe-firebase-adminsdk-7o1mp-8c8ae93086.json";
+import { writeFileSync,  unlinkSync} from 'fs';
 
-const serviceAccount = require("C://Users//habac//Downloads//db-db-9bbfe-firebase-adminsdk-7o1mp-8c8ae93086.json");
+const serviceAccount = require("../configFirebase.json");
+
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
@@ -57,11 +58,16 @@ export class AppController {
 
   @Post('deleteProduct')
   async deleteProduct(@Body() body){
-    const {id} = body;
+    const {id, arImages} = body;
+
     try{
+      arImages.forEach((img:string)=>{
+        unlinkSync(`./uploads/${img}.jpg`)
+      })
       await db.collection('data_store').doc(id).delete();
       return {type: true};
     }catch(err){
+      console.log(err);
       return {type: false, err}
     }
   }
